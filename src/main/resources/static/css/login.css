@@ -1,0 +1,51 @@
+.form_login {
+    width: 1000px;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.form_login .slide {
+    margin-top: 50vh;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 600px;
+    background-color: #ccc;
+}
+
+.form_login .login {
+    margin-top: 50vh;
+    transform: translateY(-50%);
+    height: 600px;
+    width: auto;
+}
+
+.login_form {
+    margin: 52px auto;
+}
+
+.login_form form {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 70%;
+}
+
+.login_form form label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.login_form form input {
+    width: 300px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+.login_form button {
+    width: 100%;
+}

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <!--    <link rel="stylesheet" th:href="@{/css/nv.css}">-->
+    <link rel="stylesheet" th:href="@{/css/luong.css}">
+    <link rel="stylesheet" th:href="@{/css/lich.css}">
+    <title>Document</title>
+</head>
+
+<body>
+<div class=".container-fluid">
+    <div class="nav_bar">
+        <div class="my_team">
+            QUAN LÝ NHÂN VIÊN QUÁN TRÀ SỮA
+        </div>
+        <div class="nav_contain">
+            <ul class="nav ">
+                <li class="nav-item_custom">
+                    <a class="" th:href="@{/nhanvien/index}">Nhân viên</a>
+                </li>
+                <li class="nav-item_custom">
+                    <a class="" th:href="@{/luong/index}">Lương</a>
+                </li>
+                <li class="nav-item_custom nav_selected">
+                    <a class="" href="#">Lịch làm</a>
+                </li>
+                <li sec:authorize="hasRole('Q1')" class="nav-item_custom">
+                    <a class="" th:href="@{/account/index}">Tài khoản</a>
+                </li>
+                <li id="logout">
+                    <button form="form_logout" type="submit">
+                        <form action="/logout" id="form_logout" style="width: auto;">
+							<span sec:authentication="name" style="margin-right: 10px;">   </span>
+								<p>    Đăng xuất</p>
+								<i class="fa-solid fa-arrow-right-from-bracket"></i>
+							</form>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div style="display: flex; justify-content: space-between;">
+            <span>
+                <div class="content_option">
+            <p>Chức năng</p>
+                    <div class="option_button">
+                            <div class="button_box">
+                                <button id="btn_lich">Thêm lịch</button>
+                            </div>
+                            <div class="button_box">
+                                <input id="search_l_text" type="text"
+                                       style="border-radius: 15px; padding-left: 10px; width: auto;"
+                                       placeholder="Search...">
+                                <button id="search_l_btn" style="height: 27px;
+                                background-color: #000;
+                                color: #fff;;">Search</button>
+                                <button class="btn_them_bl" style="display: none;">Thêm bảng lương</button>
+                            </div>
+                        </div>
+            <div class="table_select">
+                <label class="control-label" for="date">Tháng:
+                    <input class="form-control" id="date" name="date" placeholder="MM/YYYY" type="text" style="height: 30px" value="MM/YYYY" />
+                </label>
+
+            </div>
+        </div>
+            </span>
+            <span>
+                <div id="clock"></div>
+            </span>
+        </div>
+        <div class="content-table">
+
+            <div class="content_table_lich" >
+
+                <div class="content-table " style="margin: 0;">
+                    <div class="bang_luong bang_l">
+                        <p style="margin: 0;">LICH</p>
+                        <table style="cellspacing: 0; cellpadding: 0; border: 0; width: 1480px;"
+                               class="table table-hover table-dark table-striped">
+
+                            <tr>
+                                <td>
+                                    <!--                                <table cellspacing="0" cellpadding="1" border="1" width="300" >-->
+                                    <table style="cellspacing: 0; cellpadding: 1; border: 1px; width: 1460px;">
+                                        <colgroup>
+                                            <col span="1" style="width: 10%;">
+                                            <col span="1" style="width: 20%;">
+                                            <col span="1" style="width: 10%;">
+                                            <col span="1" style="width: 70%;">
+                                            <col span="1" style="width: 10%;">
+
+                                        </colgroup>
+                                        <tr style="color:white;background-color:grey">
+                                            <th>MANV</th>
+                                            <th>NGAY</th>
+                                            <th>CA</th>
+                                            <th>GHICHU</th>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="width:1475px; height:424px; overflow:auto;" id="sl_r">
+                                        <table style="cellspacing: 0; cellpadding: 1; border: 1px; width: 1460px;"
+                                               class="table table-hover table-dark table-striped" id="row_l">
+
+                                            <tbody>
+                                            <colgroup>
+                                                <col span="1" style="width: 10%;">
+                                                <col span="1" style="width: 20%;">
+                                                <col span="1" style="width: 10%;">
+                                                <col span="1" style="width: 70%;">
+                                                <col span="1" style="width: 10%;">
+
+                                            </colgroup>
+                                            <tr th:each="l:${listL}" th:manv="${l.MANV}" th:d="${l.NGAY}">
+                                                <td th:text="${l.MANV}"></td>
+                                                <td th:text="${l.NGAY}"></td>
+                                                <td th:text="${l.CA}"></td>
+                                                <td th:text="${l.GHICHU}"></td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_nv" class="hide_modal">
+    <div class="modal_nv_content" style="width: 600px;">
+        <div class="modal_nv_header">
+            <div class="modal_nv_header_title">
+                <p>Lịch làm</p>
+            </div>
+            <div class="modal_nv_header_close">
+                <i class="fa-solid fa-times"></i>
+            </div>
+        </div>
+        <div class="modal_l_body">
+            <div class="form_nv">
+                <form th:action="@{/lich/them}" class="row" id="form_info_nv" method="post" style="margin-left: 48px;">
+                    <table class="col-8">
+                        <colgroup>
+                            <col span="1" style="width: 120px;">
+                            <col span="1" style="width: 70%;">
+                        </colgroup>
+                        <tr>
+                            <td><p style="color: #fff; width: 100px;">Chức vụ</p></td>
+                            <td>
+                                <select name="manv" id="chucvu">
+                                    <option th:each="cv:${ListNV}" th:value="${cv.MANV}"
+                                            th:text="${cv.MANV}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p style="color: #fff">Ca:</p></td>
+                            <td>
+                                <select name="ca" id="hinhthuc">
+                                    <option th:each="ht:${ListC}"
+                                            th:value="${ht.MACA}"
+                                            th:text="${ht.TENCA}"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><p style="color: #fff">Ngày:</p></td>
+                            <td>
+                                <input required="required" class="form-control" id="date_dk" name="date" placeholder="MM/YYYY" type="text" style="height: 30px;width: 150px;" autocomplete="off" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p style="color: #fff">Ghi chú:</p></td>
+                            <td>
+                                <textarea style="width: 400px; padding: 0;" name="ghichu" id="" cols="5" rows="5" placeholder="Ghi chú"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+            </div>
+        </div>
+        <div id="modal_nv_footer" style="display: flex; justify-content: space-between;
+             height: 80px; align-items: center; padding: 20px;">
+            <div class="modal_nv_footer_item">
+                <button form="form_info_nv" class="btn btn-primary" id="btn_them" name="Add">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Form code ends -->
+<!-- included thư viện calendar -->
+<!--  jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+<!-- end -->
+<script>
+    /* Calendar in electricity */
+    $(document).ready(function() {
+        var date_input = $('input[name="date"]'); //our date input has the name "date"
+        var container =
+            $(".bootstrap-iso form").length > 0 ?
+                $(".bootstrap-iso form").parent() :
+                "body";
+        var options = {
+            format: "yyyy-mm-dd",
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        };
+        date_input.datepicker(options);
+    });
+
+    let btn_lich = document.querySelector("#btn_lich");
+    let modal_nv_l = document.querySelector("#modal_nv");
+    btn_lich.addEventListener("click", (e)=>{
+        modal_nv_l.classList.remove("hide_modal");
+    })
+
+    let date = document.querySelector("#date");
+    let row_lich = document.querySelector("#sl_r").querySelectorAll("tr");
+    date.addEventListener("blur",()=>{
+        setTimeout(
+            ()=>{
+                console.log("OKKKKKKKKKKKK")
+                row_lich.forEach((r)=>{
+                    console.log("value", date.value)
+                    console.log("r", r.getAttribute("d"))
+                    r.classList.remove("hide_r")
+                    if(date.value != r.getAttribute("d")){
+                        r.classList.add("hide_r")
+                    }
+                })
+            }, 300
+        )
+    })
+
+</script>
+<script type="application/javascript" th:src="@{/js/nv.js}">
+
+
+</script>
+<script th:inline="javascript">
+    let err = [[${error}]]
+    if(err == 'true'){
+    	alert("Lịch làm bị trùng")
+    }
+</script>
+<script type="application/javascript" th:src="@{/js/luong.js}">
+
+
+</script>
+<script>
+    let search_nv = document.querySelector("#search_l_btn")
+    time()
+    function btnModal() {
+        let closeBtn = document.querySelector(".modal_nv_header_close")
+        let btn_them = document.querySelector("#btn_them")
+        closeBtn.addEventListener("click", function () {
+            modal.classList.add("hide_modal")
+        })
+        // btn_them.nodeName = "Add";
+        btn_them.textContent = "Thêm";
+    }
+    search_nv.addEventListener("click", ()=>{
+        let search_text = document.querySelector("#search_l_text").value.trim()
+        row_lich.forEach((r)=>{
+            r.classList.remove("hide_r");
+            let manv = r.getAttribute("manv")
+            console.log(manv)
+            console.log(search_text)
+            if((search_text != '') && ((manv?manv:true) != search_text)){
+                r.classList.add("hide_r")
+            }
+        })
+    })
+    btnModal()
+</script>
+
+</body>
+</html>

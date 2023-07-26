@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" th:href="@{/css/nv.css}">
+<link rel="stylesheet" th:href="@{/css/account.css}">
+<title>Document</title>
+</head>
+
+<body>
+	<div class=".container-fluid">
+		<div class="nav_bar">
+			<div class="my_team">QUAN LÝ NHÂN VIÊN QUÁN TRÀ SỮA</div>
+			<div class="nav_contain">
+				<ul class="nav ">
+					<li class="nav-item_custom"><a class=""
+						th:href="@{/nhanvien/index}">Nhân viên</a></li>
+					<li class="nav-item_custom"><a class=""
+						th:href="@{/luong/index}">Lương</a></li>
+					<li class="nav-item_custom"><a class=""
+						th:href="@{/lich/index}">Lịch làm</a></li>
+					<li class="nav-item_custom nav_selected"><a class="" href="#">Tài
+							khoản</a></li>
+					<li id="logout">
+						<button form="form_logout" type="submit">
+							<form action="/logout" id="form_logout" style="width: auto;">
+							<span sec:authentication="name" style="margin-right: 10px;">   </span>
+								<p>    Đăng xuất</p>
+								<i class="fa-solid fa-arrow-right-from-bracket"></i>
+							</form>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div style="display: flex; justify-content: space-between;">
+				<span>
+					<div class="content_option">
+						<p>Chức năng</p>
+						<div class="option_button">
+							<div class="button_box">
+								<button th:id="themTK_Btn">Them TK</button>
+							</div>
+							<div class="button_box">
+								<input type="text"
+									style="border-radius: 15px; padding-left: 10px; width: auto;"
+									placeholder="Search..." id="search_text">
+								<button id="search_nv"
+									style="height: 27px; background-color: #000; color: #fff;">Search</button>
+							</div>
+						</div>
+						<div class="table_select">
+							<label id="chi_nhanh" for="role_selected"> Role : <select
+								name="slcn" id="role_selected">
+									<option value="all">All</option>
+									<option th:each="lcn:${listRole}" th:value="${lcn.MAQ}"
+										th:text="${lcn.TENQ}"></option>
+							</select>
+							</label> <label id="trang_thai" for="enable_selected"> Enable : <select
+								name="slcn" id="enable_selected">
+									<option value="all">All</option>
+									<option value="true" text="TRUE">TRUE</option>
+									<option value="false" text="FALSE">FALSE</option>
+									<!--                        <option th:each="lcn:${lis}"-->
+									<!--                                th:value="${lcn.MATT}"-->
+									<!--                                th:text="${lcn.TENTT}"></option>-->
+							</select>
+							</label>
+
+						</div>
+					</div>
+				</span> <span>
+					<div id="clock"></div>
+				</span>
+			</div>
+			<div class="content-table">
+				<div class="bang_tk">
+					<table
+						style="cellspacing: 0; cellpadding: 0; border: 0; width: 1480px;"
+						class="table table-hover table-dark table-striped">
+
+						<tr>
+							<td>
+								<!--                                <table cellspacing="0" cellpadding="1" border="1" width="300" >-->
+								<table
+									style="cellspacing: 0; cellpadding: 1; border: 1px; width: 1455px;">
+									<colgroup>
+										<col span="1" style="width: 10%;">
+										<col span="1" style="width: 20%;">
+										<col span="1" style="width: 20%;">
+										<col span="1" style="width: 10%;">
+										<col span="1" style="width: 40%;">
+										<col span="1" style="width: 10%;">
+
+									</colgroup>
+									<tr style="color: white; background-color: grey">
+										<th>MANV</th>
+										<th>Họ tên</th>
+										<th>USERNAME</th>
+										<th>ENABLE</th>
+										<th>ROLE</th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div style="width: 1475px; height: 424px; overflow: auto;">
+									<table
+										style="cellspacing: 0; cellpadding: 1; border: 1px; width: 1455px;"
+										class="table table-hover table-dark table-striped" id="row_tk">
+
+										<tbody>
+										<colgroup>
+											<col span="1" style="width: 10%;">
+											<col span="1" style="width: 20%;">
+											<col span="1" style="width: 20%;">
+											<col span="1" style="width: 10%;">
+											<col span="1" style="width: 40%;">
+											<col span="1" style="width: 10%;">
+
+										</colgroup>
+										<tr th:each="l:${listData}" th:enable="${l.enable}"
+											th:roles="${l.roles}" th:manv="${l.manv}"
+											th:username="${l.username}">
+											<td th:text="${l.manv}"></td>
+											<td th:text="${l.name}"></td>
+											<td th:text="${l.username}"></td>
+											<td th:text="${l.enable}"></td>
+											<td th:text="${l.roles}"></td>
+										</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div id="modal_tk" class="hide_modal">
+		<div class="modal_nv_content" style="width: 600px;">
+			<div class="modal_nv_header">
+				<div class="modal_nv_header_title">
+					<p>Tài khoản</p>
+				</div>
+				<div class="modal_nv_header_close btn_close">
+					<i class="fa-solid fa-times"></i>
+				</div>
+			</div>
+			<div class="modal_l_body">
+				<div class="form_nv">
+					<form th:action="@{/account/saveTK}" class="row" id="form_tk"
+						method="post" style="margin-left: 48px;">
+						<table class="col-8">
+							<colgroup>
+								<col span="1" style="width: 120px;">
+								<col span="1" style="width: 70%;">
+							</colgroup>
+							<tr>
+								<td><p style="color: #fff; width: 100px;">Nhân viên</p></td>
+								<td><select name="manv" id="nv_sl">
+										<option value = "none">MANV</option>
+										<option th:each="nv:${listNVD}" th:value="${nv.MANV}"
+											th:text="${nv.MANV}"></option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">TEN TK :</p></td>
+								<td><input type="text" placeholder="TEN TK" name="username" required="required">
+								</td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Quyen :</p></td>
+								<td><select name="quyen" id="quyen">
+										<option th:each="r:${listRole}" th:value="${r.MAQ}"
+											th:text="${r.TENQ}"></option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Enable :</p></td>
+								<td><select name="enable">
+										<option value="1" th:text="TRUE"></option>
+										<option value="0" th:text="FALSE"></option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Password :</p></td>
+								<td><input type="password" name="password" required="required"></td>
+							</tr>
+						</table>
+
+					</form>
+				</div>
+			</div>
+			<div id="modal_nv_footer"
+				style="display: flex; justify-content: space-between; height: 80px; align-items: center; padding: 20px;">
+				<div class="modal_nv_footer_item">
+					<button form="form_tk" class="btn btn-primary" id="btn_them"
+						name="Add">Thêm</button>
+				</div>
+				<!--            <div class="modal_nv_footer_item">-->
+				<!--                <button form="form_info_nv" class="btn btn-danger" id="btn_huy" name="Delete">Hủy</button>-->
+				<!--            </div>-->
+
+			</div>
+		</div>
+	</div>
+	<div id="modal_u_tk" class="hide_modal">
+		<div class="modal_nv_content" style="width: 600px;">
+			<div class="modal_nv_header">
+				<div class="modal_nv_header_title">
+					<p>Tài khoản</p>
+				</div>
+				<div class="modal_nv_header_close btn_close_u">
+					<i class="fa-solid fa-times"></i>
+				</div>
+			</div>
+			<div class="modal_l_body">
+				<div class="form_nv">
+					<form th:action="@{/account/updateU}" class="row" id="form_u_tk"
+						method="post" style="margin-left: 48px;">
+						<table class="col-8">
+							<colgroup>
+								<col span="1" style="width: 120px;">
+								<col span="1" style="width: 70%;">
+							</colgroup>
+							<tr>
+								<td><p style="color: #fff; width: 100px;">Nhân viên</p></td>
+								<td><input style="background-color: #ccc" id="u_manv"
+									name="username" readonly></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Quyen :</p></td>
+								<td><select name="quyen" id="quyenU">
+										<option>role</option>
+										<option th:each="r:${listRole}" th:value="${r.MAQ}"
+											th:text="${r.TENQ}"></option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Enable :</p></td>
+								<td><select name="enable" id="enable">
+										<option value="1" th:text="TRUE"></option>
+										<option value="0" th:text="FALSE"></option>
+								</select></td>
+							</tr>
+							<tr>
+								<td><p style="color: #fff">Password :</p></td>
+								<td><input type="password" name="password" id="pass">
+								</td>
+							</tr>
+						</table>
+
+					</form>
+				</div>
+			</div>
+			<div id="modal_nv_footer"
+				style="display: flex; justify-content: space-between; height: 80px; align-items: center; padding: 20px;">
+				<div class="modal_nv_footer_item">
+					<button form="form_u_tk" class="btn btn-primary" id="btn_them"
+						name="Add">Thêm</button>
+				</div>
+				<!--            <div class="modal_nv_footer_item">-->
+				<!--                <button form="form_info_nv" class="btn btn-danger" id="btn_huy" name="Delete">Hủy</button>-->
+				<!--            </div>-->
+
+			</div>
+		</div>
+	</div>
+	<script type="application/javascript" th:src="@{/js/nv.js}"></script>
+	<script type="application/javascript" th:src="@{/js/account.js}"></script>
+	<script th:inline="javascript">
+    var listNV = [[${listNV}]]
+    var listCN = [[${listCN}]]
+    var listHT = [[${listHT}]]
+    var listTT = [[${listTT}]]
+    var listCV = [[${listCV}]]
+    allRow.forEach((row) => {
+        let cv = row.querySelector("td[c_id='cv']");
+        let cn = row.querySelector("td[c_id='cn']");
+        let ht = row.querySelector("td[c_id='ht']");
+        let tt = row.querySelector("td[c_id='tt']");
+        listCV.forEach((tmp) => {
+            if (cv.getAttribute("c_col") == tmp['macv']) {
+                cv.textContent = tmp['tencv'];
+            }
+        });
+        listCN.forEach((tmp)=>{
+            if(cn.getAttribute("c_col") == tmp['macn']){
+                cn.textContent = tmp['tencn'];
+            }
+        })
+        listHT.forEach((tmp)=>{
+            if(ht.getAttribute("c_col") == tmp['maht']){
+                ht.textContent = tmp['tenht']
+            }
+        })
+        listTT.forEach((tmp)=>{
+            if(tt.getAttribute('c_col') == tmp['matt']){
+                tt.textContent = tmp['tentt']
+            }
+        })
+
+    })
+    let btn_them = document.querySelector("#btn_them")
+    allRow.forEach((row) => {
+        row.addEventListener("click", () => {
+            modal.classList.remove("hide_modal")
+            btn_them.name = "Edit";
+            btn_them.textContent = "Sửa"
+            btn_huy.name = "Delete"
+            btn_huy.classList.add("allow_delete")
+            // let nvf = findNV(listNV, row.id)
+            let nfv = {}
+            listNV.forEach((nv) => {
+                if (nv.manv.trim() == row.id.trim()) {
+                    console.log(nv)
+                    console.log("return")
+                    nvf = nv
+                }
+            })
+            console.log(nvf)
+            initForm(nvf['manv'], nvf['ho'], nvf.ten, nvf.diachi, parseInt(nvf.chucvu.slice(-1)), parseInt(nvf.chinhanh.slice(-1)),
+                parseInt(nvf.hinhthuc.slice(-1)), parseInt(nvf.trangthai.slice(-1)))
+        })
+    })
+</script>
+<script th:inline="javascript">
+    let listData = [[${listData}]]
+    let err = [[${error}]]
+    if(err == 'true'){
+    	alert("Không có nhân viên nào được thêm")
+    }
+</script>
+</body>
+</html>
